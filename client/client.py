@@ -2,6 +2,9 @@ import os
 import time
 import argparse
 
+import logging
+logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
+
 import pyarrow as pa
 import pyarrow.flight
 
@@ -10,9 +13,9 @@ def list_flights(client, interval=1):
     while True:
         try:
             for flight in client.list_flights():
-                print(flight.descriptor.path)
+                logging.info(flight.descriptor.path)
         except Exception as e:
-            print(e)
+            print(f"Client side exception: {e}")
 
         time.sleep(interval)
 
@@ -57,7 +60,7 @@ def example_put(client, interval=1):
 
 
 if __name__ == "__main__":
-    routine = os.getenv("ROUTINE", "get_flight_info_not_found")
+    routine = os.getenv("ROUTINE", "list_flights")
 
     routines = {
         "example_put": example_put,

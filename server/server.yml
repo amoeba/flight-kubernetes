@@ -4,6 +4,7 @@ metadata:
   name: flight-server
   labels:
     app: flight-server
+    component: flight-server
 spec:
   replicas: 3
   selector:
@@ -20,6 +21,9 @@ spec:
           imagePullPolicy: Never
           ports:
             - containerPort: 8815
+          env:
+            - name: PYTHONUNBUFFERED
+              value: "1"
 ---
 apiVersion: v1
 kind: Service

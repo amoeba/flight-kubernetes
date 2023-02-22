@@ -4,6 +4,7 @@ metadata:
   name: flight-client-list-flights
   labels:
     app: flight
+    component: flight-client
 spec:
   replicas: 3
   selector:
@@ -23,55 +24,5 @@ spec:
               value: list_flights
             - name: ENDPOINT
               value: grpc://flight-server:8815
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: flight-client-example-put
-  labels:
-    app: flight
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: flight
-  template:
-    metadata:
-      labels:
-        app: flight
-    spec:
-      containers:
-        - name: flight-client-example-put
-          image: flight-client:latest
-          imagePullPolicy: Never
-          env:
-            - name: ROUTINE
-              value: example_put
-            - name: ENDPOINT
-              value: grpc://flight-server:8815
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: flight-client-not-found
-  labels:
-    app: flight
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: flight
-  template:
-    metadata:
-      labels:
-        app: flight
-    spec:
-      containers:
-        - name: flight-client-not-found
-          image: flight-client:latest
-          imagePullPolicy: Never
-          env:
-            - name: ROUTINE
-              value: get_flight_info_not_found
-            - name: ENDPOINT
-              value: grpc://flight-server:8815
+            - name: PYTHONUNBUFFERED
+              value: "1"
