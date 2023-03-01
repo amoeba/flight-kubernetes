@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flight-server
+  labels:
+    app: flight-server
+    component: flight-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flight-server
+  template:
+    metadata:
+      labels:
+        app: flight-server
+    spec:
+      containers:
+        - name: flight-server
+          image: flight-server:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8815
+          env:
+            - name: PYTHONUNBUFFERED
+              value: "1"
+          securityContext:
+            privileged: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flight-server
+spec:
+  selector:
+    app: flight-server
+  ports:
+    - protocol: TCP
+      port: 8815
+      targetPort: 8815
